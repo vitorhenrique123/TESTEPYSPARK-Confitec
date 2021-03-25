@@ -6,7 +6,7 @@
 In order to use the application, you will first need:
 | Software        | Description           | Download  |
 | ------------- |:-------------:| -----:|
-| Python     | core technology for running the test | https://www.python.org/ |
+| Python (3.8.5)     | core technology for running the test | https://www.python.org/ |
 | Spark 3.1.1 with Hadoop 2.7      | Spark™ is a unified analytics engine for large-scale data processing.      |   https://www.apache.org/dyn/closer.lua/spark/spark-3.1.1/spark-3.1.1-bin-hadoop2.7.tgz |
 | Hadoop AWS Package 2.7.3  | this module contains code to support integration with Amazon Web Services      |    https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar |
 |  Optional : Virtualenv  | tool to create isolated Python environments.      |    https://pypi.org/project/virtualenv/ |
@@ -16,9 +16,9 @@ You need to install the project dependencies
 
 1. Clone this repo
 
-2. Make sure that you have all requirements done
-    1. Install Spark + Hadook [Example](https://www.liquidweb.com/kb/how-to-install-apache-spark-on-ubuntu/)
-    2. Make sure that you have the $SPARK_HOME exported on bash
+2. Check this Requirements 
+    1. Install Spark + Hadoop [Example](https://www.liquidweb.com/kb/how-to-install-apache-spark-on-ubuntu/)
+    2. export $SPARK_HOME on you're bash environment
     3. Download the hadoop-aws-2.7.3.jar on $SPARK_HOME/jars
 
 2. Install all the dependencies (Any requirements that install locally with the following command)
@@ -43,10 +43,8 @@ $ python testpyspark.py
 ```
 /
 |   requirements.txt - all python depedencies
-|   README.md - current file you are reading :)
+|   README.md - current file
 |   s3_tools.py - s3 boto3 connection to get uploaded csv file
 |   testpyspark.py - the main script file responsible for handling the datasource
 |   OriginaisNetflix.parquet - datasource
 ```
-## Comments
-Don't forget to make sure you are using the correct versions of Spark + Hadoop + Hadoop AWS
