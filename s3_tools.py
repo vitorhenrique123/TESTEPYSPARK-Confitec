@@ -28,4 +28,4 @@ def get_last_csv_link(bucket_name, folder):
         else:
             return "Folder not founded"              
     else:
-        return "Bucket noty founded"
+        return "Bucket not founded"
