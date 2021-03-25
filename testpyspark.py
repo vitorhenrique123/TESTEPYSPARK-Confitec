@@ -18,6 +18,10 @@ envconfig        = {
     "AWS_ACCESS_KEY_ID": ''
 }
 
+"""
+ Generates and validates all necessary environment variables
+"""
+
 for x in envconfig:
     if  not os.getenv(x):
         print("Misiing %s env variable" % x)
@@ -25,11 +29,18 @@ for x in envconfig:
     else:
         envconfig[x] = os.getenv(x) 
         
+"""
+ Valid if the data source file exists
+""" 
+
 if not os.path.isfile(default_filename):
     print ("File doesn't exist")
     exit(0)
 
 try:
+    """
+        Initialize the spark service with the aws package
+    """
     spark = SparkSession \
         .builder \
         .appName("Confitec Spark Test") \
@@ -39,18 +50,31 @@ try:
         .config('spark.hadoop.fs.s3a.impl', 'org.apache.hadoop.fs.s3a.S3AFileSystem') \
         .getOrCreate()
 
-
+    """ 
+       Read the datasource
+    """
     netflixFile=spark.read.parquet(default_filename)
 
+    """ 
+       Convert the Premier and dt_inclusao fields from string format to datetime
+    """
     netflixFile = (
         netflixFile
         .withColumn("Premiere", unix_timestamp(col("Premiere"), "d-MMM-yy").cast("timestamp").cast(DateType()))
         .withColumn("dt_inclusao", col("dt_inclusao").cast("timestamp"))
     )
 
+    """ 
+        Removes all duplicated lines
+    """
     netflixFile = netflixFile.dropDuplicates()
+    
+    #Order by Active(desc) and Genre fields
     netflixFile = netflixFile.sort(col("Active").desc(), col("Genre"))
 
+    """       
+        Translates all columns to Brazilian Portuguese
+    """
     netflixFile = (
         netflixFile
         .withColumn("Seasons", when(col("Seasons") == "TBA", "a ser anunciado").otherwise(col("Seasons")))
@@ -70,6 +94,9 @@ try:
         .withColumnRenamed("Language", "Idioma")
         .withColumnRenamed("dt_inclusao", "Data de inclusão")
     )
+    """
+        Export the data to a csv file and send to AWS S3
+    """
     netflixFile.select(col("Título"),col("Gênero"), col("Temporadas"), col("Pré-estreia"), col("Idioma"), col("Ativo"), col("Status"), col("Data de inclusão"), col("Data de Alteração")) \
         .repartition(1) \
         .write \
