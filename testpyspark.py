@@ -25,7 +25,7 @@ envconfig        = {
 for x in envconfig:
     if  not os.getenv(x):
         print("Misiing %s env variable" % x)
-        exit(0)
+        exit(1)
     else:
         envconfig[x] = os.getenv(x) 
         
@@ -35,7 +35,7 @@ for x in envconfig:
 
 if not os.path.isfile(default_filename):
     print ("File doesn't exist")
-    exit(0)
+    exit(1)
 
 try:
     """
@@ -108,31 +108,31 @@ try:
 except AnalysisException as error:
     print("Failed to analyze a SQL query")
     print("Description %s: " % error)
-    exit(0)
+    exit(1)
 except IllegalArgumentException as error:
     print("Passed an illegal or inappropriate argument")
     print("Description %s: " % error)
-    exit(0)
+    exit(1)
 except ParseException as error:
     print("Failed to parse a SQL command")
     print("Description %s: " % error)
-    exit(0)
+    exit(1)
 except StreamingQueryException as error: 
     print("Exception that stopped a :class:`StreamingQuery`")
     print("Description %s: " % error)
-    exit(0)
+    exit(1)
 except QueryExecutionException as error: 
     print("Failed to execute a query.")
     print("Description %s: " % error)
-    exit(0)
+    exit(1)
 except PythonException as error:
     print("Exceptions thrown from Python workers")
     print("Description %s: " % error)
-    exit(0)    
+    exit(1)    
 except UnknownException as error:
     print("UnknownException")
     print("Description %s: " % error)
-    exit(0)    
+    exit(1)    
     
 
 
